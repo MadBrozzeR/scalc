@@ -1,0 +1,45 @@
+table.calc div		{padding: 0px; margin: 0px;}
+table.calc table td	{padding: 2px; border: 0px;}
+
+div.progr		{width: 30px; position: relative; height: 150px; border: 1px solid black; overflow: visible;}
+/*div.progr div.limax	{width: 30px; height: 20px; position: absolute; bottom: 100%; left: 100%; background: url("limax.png") bottom left no-repeat; border: 0; text-indent: 5px;}
+div.progr div.limin	{width: 30px; height: 40px; position: absolute; bottom: 0px; left: 100%; background: url("limin.png") top left no-repeat; border: 0; text-indent: 5px;}*/
+div.progr div.limax	{width: 30px; height: 20px; position: absolute; bottom: 100%; left: 100%; border: 0; border-bottom: 1px solid black; text-indent: 5px;}
+div.progr div.limin	{width: 30px; height: 40px; position: absolute; bottom: 0px; left: 100%; border: 0; border-top: 1px solid black; text-indent: 5px;}
+div.progr div.pr_bar	{width: 100%; height: 0px; position: absolute; bottom: 0px; left: 0px; background: #33e; overflow: visible;}
+div.progr div.pr_bar div	{position: absolute; bottom: 0px; text-align: center; width: 100%; text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff; color: #000;}
+
+div.oildiv		{border: 0px solid black; width: 100%; height: 300px; overflow: auto; position: relative;}
+
+table.tblttl		{border: 1px solid black;}
+input.acids,
+input.params,
+input.oh		{width: 25px; padding: 0px; margin: 0px 1px 0px 0px; border: 1px solid black; background: none; color: black; height: 100%;}
+input.oh		{width: 45px;}
+
+/*table.seloils		{width: 630px;}*/
+table.seloils th	{background: #fbb;}
+table.seloils td	{background: #f7f2df;}
+table.seloils input.m,
+textarea.m		{border: 1px solid black; border-radius: 7px; background: #ddf; color: black; text-align: center; width: 95%; padding: 0px;}
+
+div.slider		{width: 340px; border: 1px solid black; padding: 0px; border-radius: 5px; position: relative; margin: 0 2px 0 2px;}
+div.slider div		{width: 25px; font-size: 15px; background: #55f url("slider.png"); border-radius: 4px; overflow: hidden; height: 17px;}
+div.slider div		{background: #55f url("58611.png");}
+div.slider input	{border: 0px; margin: 0px; padding: 0px; background: none; width: 40px; color: white; text-align: left;}
+div.slider .step td	{background: #aaa; width: 16px; height: 8px;}
+
+div.info		{width: 100%; height: 100%; position: relative;}
+div.info td		{background: #f7e2cf; height: 10px; text-align: justify;}
+div.info td.h		{background: #faa; text-align: center; font-weight: 900; height: 10px;}
+div.info td.x		{text-align: center; vertical-align: middle; border: 1px solid black; width: 20px; height: 20px; cursor: pointer; background: #faa;}
+
+td.acids,td.params	{white-space: nowrap; width: 20px; padding: 0px 2px 0px 2px; background: #f7f2df;}
+td.oils			{background: #f7f2df;}
+td.info			{background: #f7f2df; width: 20px; cursor: pointer; padding: 0px 2px 0px 2px;}
+td.oils div,
+td.oils input		{cursor: pointer;}
+div.dimparams		{color: #aaa;}
+
+table.param_bars	{border: 2px solid #eaa;}
+table.param_bars td	{background: #f7f2df;}

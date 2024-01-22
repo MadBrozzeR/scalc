@@ -1,0 +1,1585 @@
+<html class="punbb">
+<head>
+<meta charset="utf-8"/>
+<title>Мыльный калькулятор</title>
+</head>
+<body class="main">
+<img style="width: 100%;" src="src/81769.jpg"/>
+
+<div id="body" style="padding: 10px;">
+<table style="width: auto; white-space: nowrap;">
+<tr>
+<td><span id="mobile" style="font-size: 16px; cursor: pointer; text-decoration: underline;">Мобильная версия</span></td>
+<td>|</td>
+<td><label style="font-size: 16px; cursor: pointer;"><input type="checkbox" checked="checked" id="anim" onchange="save_anim(this.checked)" />Анимация</label></td>
+<td>|</td>
+<td><span style="font-size: 16px; cursor: pointer; text-decoration: underline;" onclick="clearAll()">Сбросить</span></td>
+<td>|</td>
+<td>
+<div id="adv"><div>
+<div>Дополнительно</div>
+<label><input type="checkbox" onchange="adv_list.conf()" />ВЖК и параметры</label><br />
+<label><input type="checkbox" onchange="adv_list.conf()" />Кислоты</label><br />
+<label><input type="checkbox" onchange="adv_list.conf()" />Компоненты</label><br />
+<label><input type="checkbox" onchange="adv_list.conf()" />Пережир</label><br />
+<label><input type="checkbox" onchange="adv_list.conf()" />Себестоимость</label><br />
+<label><input type="checkbox" onchange="adv_list.conf()" />Графики ВЖК</label>
+</div></div></td>
+</tr></table></div><div>
+<!--script src="http://7soap.ru/files/000c/4d/cf/67892.js"></script>
+<script src="http://7soap.ru/files/000c/4d/cf/72058.js" charset="UTF-8"></script>
+<script src="http://7soap.ru/files/000c/4d/cf/71947.js" charset="UTF-8"></script-->
+<script src="src/67892.js"></script>
+<script src="src/72058.js" charset="UTF-8"></script>
+<script src="src/71947.js" charset="UTF-8"></script>
+<script>
+
+//var css_name="http://7soap.ru/files/000c/4d/cf/63651.css";
+//var css_mob="http://7soap.ru/files/000c/4d/cf/84934.css";
+var css_name="src/63651.css";
+var css_mob="src/84934.css";
+var anim=false;
+
+function printVal(a,b) {
+	document.getElementsByName(a)[0].value=b.value;
+}
+var oils=[
+	[1,"Абрикосовая кость",		0.18937,[0,0,6,0,0,66,27,0],	100,91,,,	[1000],false],
+	[2,"Авокадо (твёрдое)",		0.18726,[0,0,21,10,0,53,6,2],	67,120,,,	[1000],false],
+	[3,"Авокадо",			0.186,[0,0,20,2,0,58,12,0],	86,99,,,	[1000],false],
+	[4,"Бабассу",			0.24548,[50,20,11,4,0,10,0,0],	15,230,,,	[1000],false],
+	[5,"Воск пчелиный",		0.09679,[0,0,0,0,0,0,0,0],	10,84,,,	[1000],false],
+	[6,"Касторовое",		0.18039,[0,0,0,0,90,4,4,0],	86,95,,,	[4],false],
+	[7,"Какао",			0.19358,[0,0,28,33,0,35,3,0],	37,157,,,	[1000],false],
+	[8,"Кокосовое 24°",		0.2567,[48,19,9,3,0,8,2,0],	10,258,,,	[1],false],
+	[9,"Кокосовое 33°",		0.2567,[48,19,9,3,0,8,2,0],	3,258,,,	[1000],false],
+	[10,"Кукуруза",			0.19077,[0,0,12,2,0,32,51,1],	117,69,,,	[6],false],
+	[12,"Лён",			0.18796,[0,0,6,3,0,27,13,50],	180,-6,,,	[1000],false],
+	[13,"Топлёное масло",		0.22724,[4,11,28,12,0,19,2,1],	30,191,,,	[1000],false],
+	[14,"Виноградная кость",	0.18025,[0,0,8,4,0,20,68,0],	131,66,,,	[1000],false],
+	[15,"Конопля",			0.18867,[0,0,6,2,0,12,57,21],	165,39,,,	[1000],false],
+	[16,"Жожоба",			0.09258,[0,0,0,0,0,12,0,0],	83,11,,,	[1000],false],
+	[17,"Ланолин",			0.1052,[0,0,0,0,0,0,0,0],	27,83,,,	[1000],false],
+	[18,"Макадамия (твёрдое)",	0.188,[0,1,6,12,0,56,3,1],	70,118,,,	[1000],false],
+	[19,"Макадамия",		0.19498,[0,0,9,5,0,59,2,0],	76,119,,,	[1000],false],
+	[20,"Манго (твёрдое)",		0.18782,[0,0,7,42,0,45,3,0],	45,146,,,	[1000],false],
+	[21,"Манго",			0.18782,[0,0,8,27,0,52,8,1],	60,130,,,	[1000],false],
+	[22,"Молочный жир",		0.22724,[4,11,28,12,0,19,2,1],	30,191,,,	[1000],false],
+//	[23,"Сливочное масло",		0.227,[4,11,28,12,0,19,2,1],	30,191,,,	[1000],false],
+	[24,"Ним",			0.195,[0,0,18,15,0,50,13,0],	89,124,,,	[1000],false],
+//	[25,"Молочный жир",		0.227,[4,11,28,12,0,19,2,1],	30,191,,,	[1000],false],
+	[26,"Оливка",			0.18867,[0,0,14,3,0,69,12,1],	85,105,,,	[7],false],
+	[27,"Оливка (помас)",		0.18867,[0,0,14,3,0,69,12,2],	84,104,,,	[1000],false],
+//	[28,"Пальмоядро",		0.247,[49,16,8,2,0,15,3,0],	20,227,,,	[2]],false,
+//	[28,"Пальмоядро",		0.23566,[49,16,8,2,0,15,3,0],	20,227,,,	[2],false],
+	[28,"Пальмоядро",		0.24687872,[49,16,8,2,0,15,3,0],	20,227,,,	[2],false],
+	[29,"Пальма",			0.19708,[0,1,44,5,0,39,10,0],	53,145,,,	[3],false],
+	[30,"Арахис",			0.19007,[0,0,8,3,0,56,26,0],	92,99,,,	[1000],false],
+//	[31,"Рапс",			0.174,[0,0,3,1,0,64,13,9],	108,56,,	[1000],false],
+	[31,"Рапс",			0.18993,[0,0,3,1,0,64,13,9],	108,56,,,	[5],false],
+	[32,"Малиновая кость",		0.187,[0,0,3,0,0,13,55,26],	163,24,,,	[1000],false],
+	[33,"Сафлор",			0.192,[0,0,7,0,0,15,75,0],	145,47,,,	[1000],false],
+//	[34,"Сафлор (олеиновое)",	0.190,[0,0,5,2,0,77,15,0],	93,97,,,	[1000],false],
+	[35,"Кунжут",			0.19301,[0,0,10,5,0,40,43,0],	110,81,,,	[1000],false],
+	[36,"Ши",			0.17983,[0,0,5,40,0,48,6,0],	59,116,,,	[1000],false],
+	[37,"Стеариновая к-та",		0.198,[0,0,0,99,0,0,0,0],	2,196,,,	[1000],false],
+	[38,"Подсолнух",		0.18937,[0,0,7,4,0,16,70,1],	133,63,,,	[8],false],
+	[39,"Арбузная кость",		0.19217,[0,0,11,10,0,18,60,1],	119,71,,,	[1000],false],
+	[40,"Лавр",			0.19708,[25,1,15,1,0,31,26,1],	74,124,,,	[1000],false],
+	[41,"Горчица",			0.177,[0,1,9,15,0,58,16,0],	70,118,,,	[1000],false],
+	[42,"Грецкий орех",		0.18726,[0,0,7,2,0,18,60,0],	145,45,,,	[1000],false],
+	[43,"Зародыши пшеницы",		0.18376,[0,0,17,2,0,17,58,0],	128,58,,,	[1000],false],
+	[44,"Облепиховая кость",	0.19638,[0,0,7,3,0,14,36,38],	165,30,,,	[1000],false],
+	[45,"Облепиховая кость и ягода",0.183,[0,0,30,1,0,28,10,0],	86,97,,,	[1000],false],
+	[46,"Рыжик",			0.18796,[0,0,6,2,0,24,19,45],	144,44,,,	[1000],false],
+	[47,"Куриный жир",		0.195,[0,1,25,7,0,38,21,0],	69,130,,,	[1000],false],
+	[48,"Гусиный жир",		0.192,[0,0,21,6,0,54,10,0],	65,130,,,	[1000],false],
+	[49,"Говяжий жир",		0.200,[2,6,28,22,0,36,3,1],	45,147,,,	[1000],false],
+	[50,"Свиной жир",		0.19778,[0,1,28,13,0,46,6,0],	57,139,,,	[1000],false],
+	[51,"Сливочное (82,5% - Традиционное)",		0.187473,[4,11,28,12,0,19,2,1],		30,191,,,	[1000],false],
+	[52,"Сливочное (80,0% - Любительское)",		0.181792,[4,11,28,12,0,19,2,1],		30,191,,,	[1000],false],
+	[53,"Сливочное (72,5% - Крестьянское)",		0.164749,[4,11,28,12,0,19,2,1],		30,191,,,	[1000],false],
+	[54,"Сливочное (61,0% - Бутербродное)",		0.1386164,[4,11,28,12,0,19,2,1],	30,191,,,	[1000],false],
+	[55,"Сливочное (50,0% - Чайное)",		0.11362,[4,11,28,12,0,19,2,1],		30,191,,,	[1000],false],
+	[56,"Лесной орех",		0.19217,[0,0,5,3,0,75,10,0],	97,94,,,	[1000],false],
+	[57,"Миндаль (твёрдое)",	0.188,[0,1,9,15,0,58,16,0],	70,118,,,	[1000],false],
+	[58,"Миндаль",			0.19147,[0,0,7,0,0,71,18,0],	99,97,,,	[1000],false],
+	[59,"Примула вечерняя",		0.18867,[0,0,0,0,0,0,80,9],	160,30,,,	[1000],false],
+	[60,"Тыквенная семечка",	0.18937,[0,0,11,8,0,33,50,0],	128,67,,,	[1000],false],
+	[61,"Персик",			0.18867,[0,0,6,2,0,65,25,1],	108,87,,,	[1000],false],
+	[62,"Рисовые отруби",		0.179,[0,1,22,3,0,43,26,0],	110,70,,,	[1000],false],
+	[63,"Маковые семена",		0.194,[0,0,10,2,0,17,69,2],	140,54,,,	[1000],false],
+	[64,"Соя",			0.19007,[0,0,11,5,0,24,50,8],	131,61,,,	[1000],false],
+	[65,"Шиповик",			0.187,[0,0,4,2,0,12,46,31],	188,10,,,	[1000],false],
+	[66,"Хлопок",			0.194,[0,0,13,13,0,18,52,1],	108,89,,,	[1000],false],
+	[67,"Кедровый орех",		0.189,[0,0,13,0,0,36,38,23],	161,28,,,	[1000],false],
+	[68,"Козий жир",			0.192,[5,11,23,30,0,29,2,0],	40,152,,,	[1000],false],
+	[69,"Бараний жир",		0.194,[4,10,24,13,0,26,5,0],	54,156,,,	[1000],false],
+	[70,"Медвежий жир",		0.1946,[0,2,7,3,0,70,9,0],	92,100,,,	[1000],false],
+	[71,"Баобаб",		0.2,[0,1,24,4,0,37,28,2],	75,125,,,	[1000],false],
+];
+oils.to;
+
+var additives=[];
+var prices=[];
+var price_mem=[];
+var adv_mem=[];
+
+function evalC(arr) {
+	var hrd=0,cln=0,cnd=0,bbl=0,crm=0;
+	for(i=0;i<arr.length;i++) {
+		hrd=arr[i][3][0]+arr[i][3][1]+arr[i][3][2]+arr[i][3][3];
+		cln=arr[i][3][0]+arr[i][3][1];
+		cnd=arr[i][3][4]+arr[i][3][5]+arr[i][3][6]+arr[i][3][7];
+		bbl=arr[i][3][0]+arr[i][3][1]+arr[i][3][4];
+		crm=arr[i][3][2]+arr[i][3][3]+arr[i][3][4];
+		arr[i][6]=[hrd,cln,cnd,bbl,crm];
+
+		arr[i][2]=[arr[i][2],arr[i][2]*0.71301248];
+	}
+}
+
+function save_anim(a) {
+	anim=a;
+	if(a) setCookie("anim","1",365);
+	else setCookie("anim","0",365);
+}
+
+var adv_list=document.getElementById("adv");
+adv_list=adv_list.childNodes[0];
+adv_list.height=22;
+adv_list.min_height=22;
+adv_list.max_height=160;
+adv_list._this=adv_list;
+adv_list.incr=10;
+adv_list.to;
+
+adv_list.onmouseover=function() {
+	clearTimeout(adv_list.to);
+	this.style.borderColor="black";
+	this.style.backgroundColor="#f7f2df";
+}
+
+adv_list.onmouseout=function() {
+	if(this.height>this.min_height)this.to=setTimeout(function() {adv_list.scrll(false)},1000);
+	else {
+		this.style.borderColor="transparent";
+		this.style.backgroundColor="transparent";
+	}
+}
+
+adv_list.scrll=function(up) {
+	if(up) {
+		if(anim) {
+			this.height+=this.incr;
+			if(this.height>=this.max_height) {
+				this.height=this.max_height;
+				this.style.height=this.height+"px";
+			}
+			else {
+				this.style.height=this.height+"px";
+				setTimeout(function() {adv_list.scrll(up);},10);
+			}
+		}
+		else {
+			this.height=this.max_height;
+			this.style.height=this.height+"px";
+		}
+	} else {
+		if(anim) {
+			this.height-=this.incr;
+			if(this.height<=this.min_height) {
+				this.height=this.min_height;
+				this.style.height=this.height+"px";
+				this.style.borderColor="transparent";
+				this.style.backgroundColor="transparent";
+			}
+			else {
+				this.style.height=this.height+"px";
+				setTimeout(function() {adv_list.scrll();},10);
+			}
+		}
+		else {
+			this.height=this.min_height;
+			this.style.height=this.height+"px";
+			this.style.borderColor="transparent";
+			this.style.backgroundColor="transparent";
+		}
+	}
+}
+
+adv_list.conf=function(arr) {
+	var chb=adv_list.getElementsByTagName("INPUT");
+	var opt=[];
+	var i;
+	if(arr) for(i=0;i<arr.length;i++) {
+		if(arr[i]=="1")chb[i].checked=true;
+		else chb[i].checked=false;
+	}
+	opt[0]=chb[0].checked?[1]:[0];
+	opt[1]=chb[1].checked?[1,"table-row"]:[0,"none"];
+	opt[2]=chb[2].checked?[1,"table-row"]:[0,"none"];
+	opt[3]=chb[3].checked?[1,"table-cell","inline"]:[0,"none","none"];
+	opt[4]=chb[4].checked?[1,"table-row"]:[0,"none"];
+	opt[5]=chb[5].checked?[1,"table-row"]:[0,"none"];
+	openInfo(!opt[0][0]);
+	for(i=0;i<acids.length;i++) acids[i].row.style.display=opt[1][1];
+	frame.proptbl.tbl.r[6].style.display=opt[2][1];
+	for(i=0;i<oils.length;i++) oils[i][7].d5.style.display=opt[3][1];
+	frame.proptbl.prcsf.style.display=opt[3][2];
+	frame.c_table.r[9].style.display=opt[4][1];
+	frame.c_table.r[10].style.display=opt[4][1];
+	frame.c_table.r[11].style.display=opt[4][1];
+	frame.progrtbl.tbl.r[2].style.display=opt[5][1];
+	frame.progrtbl.tbl.r[3].style.display=opt[5][1];
+	setCookie("adv",opt[0][0]+","+opt[1][0]+","+opt[2][0]+","+opt[3][0]+","+opt[4][0]+","+opt[5][0],365);
+}
+adv_list.load=function() {
+	var chb=getCookie("adv");
+	var anim_chb=document.getElementById("anim");
+
+	if(chb==null)chb=[0,0,0,0,0,0];
+	else chb=chb.split(",");
+//	alert(chb);
+
+	adv_mem=chb;
+	adv_list.conf(adv_mem);
+
+	if(getCookie("anim")==="0") anim=false;
+	else anim=true;
+	anim_chb.checked=anim;
+}
+
+adv_list.onclick=function() {adv_list.scrll(true);}
+
+function comparator(a,b) {
+	if(a[1].toLowerCase() < b[1].toLowerCase()) return -1;
+	if(a[1].toLowerCase() > b[1].toLowerCase()) return 1;
+	return 0;
+}
+function comparator1(a,b) {
+	if	(a[8][0] < b[8][0]) return -1;
+	else if	(a[8][0] > b[8][0]) return 1;
+	else if	(a[1].toLowerCase() < b[1].toLowerCase()) return -1;
+	else if	(a[1].toLowerCase() > b[1].toLowerCase()) return 1;
+	else	return 0;
+}
+function comparator2(a,b) {
+	if	(a[6][0] < b[6][0]) return 1;
+	else if	(a[6][0] > b[6][0]) return -1;
+	else if	(a[1].toLowerCase() < b[1].toLowerCase()) return -1;
+	else if	(a[1].toLowerCase() > b[1].toLowerCase()) return 1;
+	else	return 0;
+}
+function comparator3(a,b) {
+	if	(a[6][1] < b[6][1]) return 1;
+	else if	(a[6][1] > b[6][1]) return -1;
+	else if	(a[1].toLowerCase() < b[1].toLowerCase()) return -1;
+	else if	(a[1].toLowerCase() > b[1].toLowerCase()) return 1;
+	else	return 0;
+}
+function comparator4(a,b) {
+	if	(a[6][2] < b[6][2]) return 1;
+	else if	(a[6][2] > b[6][2]) return -1;
+	else if	(a[1].toLowerCase() < b[1].toLowerCase()) return -1;
+	else if	(a[1].toLowerCase() > b[1].toLowerCase()) return 1;
+	else	return 0;
+}
+function comparator5(a,b) {
+	if	(a[6][3] < b[6][3]) return 1;
+	else if	(a[6][3] > b[6][3]) return -1;
+	else if	(a[1].toLowerCase() < b[1].toLowerCase()) return -1;
+	else if	(a[1].toLowerCase() > b[1].toLowerCase()) return 1;
+	else	return 0;
+}
+function comparator6(a,b) {
+	if	(a[6][4] < b[6][4]) return 1;
+	else if	(a[6][4] > b[6][4]) return -1;
+	else if	(a[1].toLowerCase() < b[1].toLowerCase()) return -1;
+	else if	(a[1].toLowerCase() > b[1].toLowerCase()) return 1;
+	else	return 0;
+}
+function comparator7(a,b) {
+	if	(a[4] < b[4]) return 1;
+	else if	(a[4] > b[4]) return -1;
+	else if	(a[1].toLowerCase() < b[1].toLowerCase()) return -1;
+	else if	(a[1].toLowerCase() > b[1].toLowerCase()) return 1;
+	else	return 0;
+}
+function comparator8(a,b) {
+	if	(a[5] < b[5]) return 1;
+	else if	(a[5] > b[5]) return -1;
+	else if	(a[1].toLowerCase() < b[1].toLowerCase()) return -1;
+	else if	(a[1].toLowerCase() > b[1].toLowerCase()) return 1;
+	else	return 0;
+}
+
+oils=oils.sort(comparator);
+
+function clearAll() {
+	var el;
+	while(chkoils.length) {
+		el=chkoils.pop();
+		el.changevbl(false);
+	}
+	while(sfoils.length) {
+		el=sfoils.pop();
+		el.changevbl(false);
+	}
+	while(additives.length>1) {
+		el=additives.pop();
+		el.obj.changevbl(false);
+		el.defaults();
+	}
+	for(var i=0,l=acids.length;i<l;i++){
+		acids[i].comp.defaults();
+	}
+	frame.proptbl.liq.defaults();
+	frame.proptbl.sf.slider.defaults();
+	frame.proptbl.crem.defaults();
+	frame.proptbl.mass.defaults();
+	additives[0].defaults();
+	frame.printtbl.nme.value="";
+	frame.printtbl.not.value="";
+	frame.printtbl.htm.value="";
+}
+
+function hidetbl(el,el2) {
+	if (el.checked==true) el2.style.display="block";
+	else el2.style.display="none";
+}
+
+function clearNode(node) {
+	node.parentNode.removeChild(node);
+}
+
+</script>
+<!-- <iframe width="100%" height="1600" id="mainframe" frameborder="0" scroll="auto"></iframe> //-->
+<script>
+var frame={
+//	frame: document.getElementById("mainframe").contentWindow
+	frame: window
+}
+
+function opt_prc(impt) {
+	var prcnt=impt?impt[11]:frame.proptbl.prc.prcnt;
+	var maxpc=parseInt(prcnt.innerHTML);
+	var prct=100;
+	var fixmass=0;
+	var sortoils=new Array();
+	var ii;
+	var chkoils1=impt?impt[13]:chkoils;
+	for(ii=0;ii<chkoils1.length;ii++) if(chkoils1[ii].vbl) {
+		if(chkoils1[ii].fix.checked) {
+			prct-=chkoils1[ii].slider.val;
+			maxpc-=chkoils1[ii].slider.val;
+			fixmass+=parseFloat(chkoils1[ii].mass.value);
+		}
+		else {sortoils.push(chkoils1[ii]);}
+	}
+	var opt=(prct>0&&maxpc>0)?prct/maxpc:0;
+	sortoils.sort(function(a,b){return b.slider.val-a.slider.val});
+	for(ii=0;ii<sortoils.length;ii++) {
+		sortoils[ii].slider.val=Math.floor(sortoils[ii].slider.val*opt);
+		sortoils[ii].slider.inp.value=sortoils[ii].slider.val;
+		sortoils[ii].slider.inp.onchange();
+		prct-=sortoils[ii].slider.val;
+	}
+	for(ii=0;ii<prct;ii++) {
+		sortoils[ii].slider.val++;
+		sortoils[ii].slider.inp.value=sortoils[ii].slider.val;
+		sortoils[ii].slider.inp.onchange();
+	}
+}
+
+function openInfo(a) {
+	var TDs=frame.oiltbl.tbldiv.getElementsByTagName("TD");
+	if(frame.oiltbl.tbl.d(1,1).style.display=="none"&&a) {
+		frame.oiltbl.tbl.d(1,0).setAttribute("colspan","1");
+		frame.oiltbl.tbl.d(1,1).style.display="table-cell";
+		for(i=0;i<oils.length;i++) {oils[i][7].d1.style.display="none";oils[i][7].d2.style.display="none";oils[i][7].d3.style.display="none";}
+	}else
+	if(frame.oiltbl.tbl.d(1,1).style.display!="none"&&!a) {
+		frame.oiltbl.tbl.d(1,0).setAttribute("colspan",frame.oiltbl.tbl.r[1].d.length);
+		frame.oiltbl.tbl.d(1,1).style.display="none";
+		for(i=0;i<oils.length;i++) {oils[i][7].d1.style.display="table-cell";oils[i][7].d2.style.display="table-cell";oils[i][7].d3.style.display="table-cell";}
+	} 
+}
+
+function pg_print(mod) {
+	var str="<html><body>";
+	var totalmass=totalsf=0;
+	var liq=frame.frame.document.getElementsByName("liq")[0];
+	var sf=frame.frame.document.getElementsByName("sf")[0];
+	var cit=frame.frame.document.getElementsByName("cit")[0];
+	var lact=frame.frame.document.getElementsByName("lact")[0];
+	var suc=frame.proptbl.suc;
+	str+="<table>";
+	str+="<tr><td style='border: 2px solid #aaa; height: 3cm;' colspan='2'><span style='float: left; font-size: 25mm; line-height: 25mm; font-weight: 900; margin-left: 70px;'>7</span><span style='font-size: 12mm; line-height: 12mm;'>SOAP.ru</span><br /><span style='font-size: 5mm; line-height: 5mm; border-top: 2px solid black; color: #555;'>Форум мыловаров любителей</span></td></tr>";//<script>
+	str+="<tr><td style='border: 2px solid #aaa; font-size: 25px; text-align: center; padding: 1mm 10mm 1mm 10mm;' colspan='2'>"+frame.frame.document.getElementsByName("recipe")[0].value+"</td></tr>";
+	str+="<tr><td>";
+	for(i=0;i<chkoils.length;i++) if(chkoils[i].vbl&&parseFloat(chkoils[i].mass.inp.value)>0) {
+		totalmass+=parseFloat(chkoils[i].mass.inp.value);
+	}
+	for(i=0;i<sfoils.length;i++) if(sfoils[i].vbl&&parseFloat(sfoils[i].mass.inp.value)>0) {
+		totalsf+=parseFloat(sfoils[i].mass.inp.value);
+	}
+	str+="<div style='text-indent: 1cm;'>Масла:</div>";
+	str+="<table border='1' cellspacing='0' cellpadding='2'><col style='width: 8cm' /><col style='width: 2cm' /><col style='width: 2cm' />";//<script>
+	for(i=0;i<chkoils.length;i++) if(chkoils[i].vbl&&parseFloat(chkoils[i].mass.inp.value)>0) {
+		str+="<tr><td>"+chkoils[i].nme+"</td><td>"+(Math.round(parseFloat(chkoils[i].mass.inp.value)/totalmass*10000)/100)+"%</td><td>"+chkoils[i].mass.inp.value+" г.</td></tr>";
+	}
+	str+="<tr><td colspan='2'></td><td>"+totalmass+" г.</td></tr>";
+	str+="</table>";
+	str+="<div style='text-indent: 1cm;'>Дополнительно:</div>";
+	str+="<table border='1' cellspacing='0' cellpadding='2'><col style='width: 8cm' /><col style='width: 2cm' /><col style='width: 2cm' />";//<script>
+	str+="<tr><td>Жидкость</td><td>"+liq.slider.val+"%</td><td>"+frame.proptbl.liq.mass.inp.value+" г.</td></tr>";
+	if(sf.slider.val>0)str+="<tr><td>Неомыляемые жиры</td><td>"+sf.slider.val+"%</td><td></td></tr>";
+	for(i=0;i<additives.length;i++) {
+		if(additives[i].slider.val>0&&additives[i].vbl&&totalsf==0) str+="<tr><td>"+additives[i].title+"</td><td>"+additives[i].slider.val+"%</td><td>"+additives[i].mass.inp.value+" г.</td></tr>";
+	}
+	for(i=0;i<acids.length;i++) {
+		if(parseFloat(acids[i].comp.mass.inp.value)>0)str+="<tr><td>"+acids[i].fullname+"</td><td>"+acids[i].comp.slider.val+"%</td><td>"+acids[i].comp.mass.inp.value+" г.</td></tr>";
+	}
+	str+="</table>";
+	if(totalsf>0){
+		str+="<div style='text-indent: 1cm;'>Масла в пережире:</div>";
+		str+="<table border='1' cellspacing='0' cellpadding='2'><col style='width: 8cm' /><col style='width: 2cm' /><col style='width: 2cm' />";//<script>
+		str+="<tr><td>Пережир после геля</td><td>"+Math.round(totalsf/totalmass*10000)/100+"%</td><td>"+totalsf+" г.</td></tr>";
+		for(i=0;i<sfoils.length;i++) if(sfoils[i].vbl&&parseFloat(sfoils[i].mass.value)>0) {
+			str+="<tr><td>"+sfoils[i].nme+"</td><td>"+(Math.round(parseFloat(sfoils[i].mass.inp.value)/totalsf*10000)/100)+"%</td><td>"+sfoils[i].mass.inp.value+" г.</td></tr>";
+		}
+		str+="</table>";
+	}
+	str+="<div style='text-indent: 1cm;'>Щёлочь:</div>";
+	str+="<table border='1' cellspacing='0' cellpadding='2'><col style='width: 10cm' /><col style='width: 2cm' />";//<script>
+	if(parseFloat(frame.proptbl.naoh.innerHTML)>0)str+="<tr><td>NaOH</td><td>"+frame.proptbl.naoh.innerHTML+" г.</td></tr>";
+	if(parseFloat(frame.proptbl.koh.innerHTML)>0)str+="<tr><td>KOH</td><td>"+frame.proptbl.koh.innerHTML+" г.</td></tr>";
+	str+="</table>";
+	str+="</td><td style='width: 7cm; vertical-align: top;'><br />";
+	str+="<table border='1' cellspacing='0' style='width: 6cm; margin-left: 1cm;'>";
+	str+="<col /><col /><col style='width: 1cm; text-align: right;' />";//<script>
+	str+="<tr><td>Твёрдость</td><td>[29-54]</td><td>"+pr_bars[0].val+"</td></tr>";
+	str+="<tr><td>Очищение</td><td>[12-22]</td><td>"+pr_bars[1].val+"</td></tr>";
+	str+="<tr><td>Кондиция</td><td>[44-69]</td><td>"+pr_bars[2].val+"</td></tr>";
+	str+="<tr><td>Пузыри</td><td>[14-46]</td><td>"+pr_bars[3].val+"</td></tr>";
+	str+="<tr><td>Кремовость</td><td>[16-48]</td><td>"+pr_bars[4].val+"</td></tr>";
+	str+="<tr><td>Йодное число</td><td>[41-70]</td><td>"+pr_bars[5].val+"</td></tr>";
+	str+="<tr><td>INS</td><td>[136-165]</td><td>"+pr_bars[6].val+"</td></tr>";
+	str+="</table>";
+	str+="</td></tr>";
+	str+="<tr><td style='border: 2px solid #aaa; padding: 1mm;' colspan='2'><div>"+frame.frame.document.getElementsByName("notes")[0].value.replace(/\n/g,"<br />")+"</div><div style='text-align: right;'>© 7soap.ru</div></td></tr>";//<script>
+	str+="</table>";
+	str+="</body></html>";
+
+	if(mod=="html") {
+		if(frame.printtbl.tbl.r[3].style.display=="none") {
+			frame.printtbl.tbl.r[3].style.display="table-row";
+			frame.frame.scrollBy(0,110);
+		}
+		frame.printtbl.htm.innerHTML=str;
+	}
+	else {
+		var pg=window.open('',"print","width=800,height=600,left=100,top=50");
+		pg.document.write(str);
+		pg.document.close();
+	}
+}
+
+function addt(str) {
+	var _this=this;
+	var win=frame.frame;
+
+	var t=frame.proptbl.tbl;
+	this.r=win.document.createElement("tr");
+	this.d=[this.r.insertCell(-1),this.r.insertCell(-1),this.r.insertCell(-1),this.r.insertCell(-1),this.r.insertCell(-1)];
+	this.elem=new component("comp[]",0,0,100,str);
+	this.span=win.document.createElement("span");
+	this.del=win.document.createElement("div");
+	this.elem.obj=this;
+
+	this.span.innerHTML=this.elem.title;
+	this.del.innerHTML="X";
+	this.del.setAttribute("style","width: 100%; height: 100%; text-align: center; cursor: pointer; font-weight: 900;");
+	this.del.onclick=function() {_this.changevbl(false);}
+	this.d[0].style.padding="0px";
+
+	this.d[0].appendChild(this.del);
+	this.d[1].appendChild(this.span);
+	this.d[2].appendChild(this.elem.slider.el);
+	this.d[3].appendChild(this.elem.mass.el);
+	this.d[4].appendChild(this.elem.box);
+
+	new mbr.actspan(this.span,this.del,"text-decoration: line-through;");
+
+	this.changevbl=function(a) {
+		this.elem.vbl=a;
+		if(!a) {
+			clearNode(this.r);
+			this.elem.price.insrow(false);
+		}
+		else {
+			this.insrow();
+		}
+		calculate();
+	}
+
+	this.insrow=function() {
+		t.insertRowBefore(6,this.r);
+		calculate();
+		this.elem.slider.dimFind();
+		this.elem.slider.setWidth();
+		this.elem.price.insrow(true,2);
+	}
+}
+
+function addcomp(inpp) {
+	if(inpp.value!=""){
+		var elem,i;
+		var ex=false;
+		var str=inpp.value;
+		str=str[0].toUpperCase()+str.substr(1);
+		for(i=0;i<additives.length;i++){
+			if(additives[i].title==str) {ex=i; break;}
+		}
+		if(ex===false){
+			elem=new addt(str);
+			additives.push(elem.elem);
+			additives[additives.length-1].obj.insrow();
+		}
+		else {
+			additives[ex].obj.changevbl(true);
+		}
+	}
+	inpp.value="";
+}
+
+var tempel;
+
+if(frame.frame==window){
+	frame.body=frame.frame.document.getElementById("body");
+	frame.css=frame.body.appendChild(frame.frame.document.createElement("link"));
+	frame.css.href=css_name;
+	frame.css.rel="stylesheet";
+	frame.css.type="text/css";
+} else {
+	frame.frame.document.write("<?xml version=\"1.0\" encoding=\"utf-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html><head><link rel=\"stylesheet\" type=\"text/css\" href=\""+css_name+"\" /></head><body></body></html>");//<script>
+	frame.body=frame.frame.document.getElementsByTagName("BODY")[0];
+}
+
+//eaa=b8c4ad
+//fbb=becab2=d4e1c6
+//fbf=f7f2df
+
+function hideIt(el,a) {
+	var lbl=frame.frame.document.createElement("label");
+	lbl.appendChild(frame.frame.document.createTextNode("развернуть"));
+	lbl.chk=lbl.appendChild(frame.frame.document.createElement("input"));
+	lbl.chk.type="checkbox";
+	lbl.chk.checked=a?true:false;
+	lbl.chk.onchange=function() {hidetbl(this,el);}
+	if(!a)hidetbl(lbl.chk,el);
+	return lbl;
+}
+
+function mketit(str,hide,help,hidden) {
+	if(!hidden) var hidden=false;
+	var tbl=mbr.mketbl([["?",str,hideIt(hide,!hidden)],[]],"class=header");
+	if(!help) var help="";
+	tbl.div=tbl.d(1,0).appendChild(frame.frame.document.createElement("div"));
+	tbl.d(0,2).style.whiteSpace="nowrap";
+	tbl.d(0,2).style.width="100px";
+	tbl.d(0,0).setAttribute("style","width: 25px; cursor: pointer;");
+	tbl.d(1,0).colSpan=tbl.r[0].d.length;
+	tbl.d(1,0).style.background="#f7f2df";
+	tbl.d(1,0).style.borderBottom="0px";
+	tbl.r[1].style.display="none";
+	tbl.div.setAttribute("style","text-align: left; font-weight: 300; height: 200px; overflow-y: scroll;");
+
+	tbl.d(0,0).onclick=function() {
+		var stl=tbl.r[1].style;
+		stl.display=(stl.display=="none")?"table-row":"none";
+	}
+
+	tbl.div.innerHTML=help;
+
+	return tbl;
+}
+
+frame.oiltbl={
+	div: frame.frame.document.createElement("div"),
+	div1: frame.frame.document.createElement("div"),
+	divarr: ["&nbsp;","Лауриновая кислота","Миристиновая кислота","Пальмитиновая кислота","Стеариновая кислота","Рицинолеиновая кислота","Олеиновая кислота","Линолевая кислота","Линоленовая кислота","Твёрдость","Очищение","Кондиция","Пузыри","Кремовость","Йодное","INS","Коэффициент омыления KOH","Коэффициент омыления NaOH","В пережир"],
+	tbldiv: frame.frame.document.createElement("div")
+}
+frame.oiltbl.tit=mketit("Таблица масел",frame.oiltbl.div,help[0]);
+frame.oiltbl.div1.style.padding="2px 2px 2px 10px";
+frame.oiltbl.div1.innerHTML="&nbsp;";
+frame.oiltbl.div1.style.fontSize="12px";
+
+frame.oiltbl.hl=function(a) {
+	this.div1.innerHTML=this.divarr[a];
+}
+frame.oiltbl.tbldiv.className="oildiv";
+frame.oiltbl.tbldiv.tbl=frame.oiltbl.tbldiv.appendChild(frame.frame.document.createElement("table"));
+frame.oiltbl.tbldiv.tbl.style.width="100%";
+frame.oiltbl.tbldiv.tbl.cellspacing=2;
+frame.oiltbl.tbldiv.tbl.cellpadding=2;
+
+tempel=frame.oiltbl;
+
+tempel.panel=frame.frame.document.createElement("div");
+tempel.panel.setAttribute("style","width: 100%; height: 100%; position: relative; overflow: visible; text-align: right; font-size: 12px");
+tempel.info=frame.frame.document.createElement("div");
+tempel.info.className="info";
+tempel.panel.sorting=tempel.panel.appendChild(frame.frame.document.createElement("span"));
+tempel.panel.sorting.appendChild(frame.frame.document.createTextNode("| Сортировка: "));
+tempel.panel.sorting.sel=tempel.panel.sorting.appendChild(frame.frame.document.createElement("select"));
+tempel.panel.sorting.sel.setAttribute("style","padding: 0px; margin: 0px; font-size: 12px;");
+
+tempel.panel.sorting.sel.opts=["по алфавиту","⇑ популярные","по твёрдости","по очищению","по кондиции","по пене","по кремовости","по йодному","по INS"];
+tempel.panel.sorting.sel.opt=[];
+for(i=0;i<tempel.panel.sorting.sel.opts.length;i++) {
+	tempel.panel.sorting.sel.opt[i]=tempel.panel.sorting.sel.appendChild(frame.frame.document.createElement("option"));
+	tempel.panel.sorting.sel.opt[i].innerHTML=tempel.panel.sorting.sel.opts[i];
+	tempel.panel.sorting.sel.opt[i].value=i+1;
+}
+
+tempel.panel.sorting.sel.onchange=function() {
+	if(this.value==1) {oils=oils.sort(comparator); appendR();}
+	else if(this.value==2) {oils=oils.sort(comparator1); appendR();}
+	else if(this.value==3) {oils=oils.sort(comparator2); appendR();}
+	else if(this.value==4) {oils=oils.sort(comparator3); appendR();}
+	else if(this.value==5) {oils=oils.sort(comparator4); appendR();}
+	else if(this.value==6) {oils=oils.sort(comparator5); appendR();}
+	else if(this.value==7) {oils=oils.sort(comparator6); appendR();}
+	else if(this.value==8) {oils=oils.sort(comparator7); appendR();}
+	else if(this.value==9) {oils=oils.sort(comparator8); appendR();}
+}
+
+tempel.panel.test=frame.frame.document.createElement("span");
+tempel.panel.test.innerHTML="test";
+tempel.panel.test.onclick=function() {oils=oils.sort(comparator1); oilTblCreate();}
+//tempel.panel.appendChild(tempel.panel.test);
+
+tempel.info.div=frame.frame.document.createElement("div");
+frame.info=new Array();
+for(i=0;i<19;i++) frame.info.push(frame.frame.document.createElement("span"));
+tempel.info.t=tempel.info.div.appendChild(mbr.mketbl([
+	["ВЖК состав","Параметры"],
+	["Лауриновая",		frame.info[0],	"Твёрдость",	frame.info[8]],
+	["Миристиновая",	frame.info[1],	"Очищение",	frame.info[9]],
+	["Пальмитиновая",	frame.info[2],	"Кондиция",	frame.info[10]],
+	["Стеариновая",		frame.info[3],	"Пузыри",	frame.info[11]],
+	["Рицинолеиновая",	frame.info[4],	"Кремовость",	frame.info[12]],
+	["Олеиновая",		frame.info[5],	"Йодное",	frame.info[13]],
+	["Линолевая",		frame.info[6],	"INS",		frame.info[14]],
+	["Линоленовая",		frame.info[7],	""],
+	["К-т NaOH",		frame.info[17],	"К-т KOH",	frame.info[16]],
+	[frame.info[18]]
+],"cellspacing=2,cellpadding=2,width=100%,height=100%"));
+tempel.info.t1=tempel.info.appendChild(mbr.mketbl([[frame.info[15],"X"],[tempel.info.div]],"cellspacing=0,cellpadding=0,width=100%,height=100%"));
+tempel.info.div.style.height="278px";
+tempel.info.div.style.overflow="auto";
+tempel.info.t1.d(1,0).style.background="none";
+tempel.info.t1.d(1,0).colSpan="2";
+tempel.info.t1.d(0,0).className="h";
+tempel.info.t1.d(0,1).className="x";
+tempel.info.t1.d(0,1).onclick=function() {openInfo(false);}
+tempel.info.t.d(0,0).colSpan=2;
+tempel.info.t.d(0,1).colSpan=2;
+tempel.info.t.d(8,2).colSpan=2;
+tempel.info.t.d(0,0).className="h";
+tempel.info.t.d(0,1).className="h";
+tempel.info.t.d(1,0).style.width="40%";
+tempel.info.t.d(1,1).style.width="10%";
+tempel.info.t.d(1,2).style.width="40%";
+tempel.info.t.d(1,3).style.width="10%";
+tempel.info.t.d(10,0).colSpan=4;
+tempel.info.t.d(10,0).style.height="auto";
+
+frame.oiltbl.tbl=frame.oiltbl.div.appendChild(mbr.mketbl([
+	[frame.oiltbl.div1,frame.oiltbl.panel],
+	[frame.oiltbl.tbldiv,frame.oiltbl.info]
+],"cellspacing=0,cellpadding=0,width=100%"));
+
+frame.oiltbl.tbl.style.border="2px solid #eaa";
+frame.oiltbl.tbl.d(1,0).colSpan=2;
+frame.oiltbl.tbl.d(1,1).style.display="none";
+frame.oiltbl.tbl.d(1,1).style.height="300px";
+frame.oiltbl.tbl.d(0,1).style.width="400px";
+frame.oiltbl.tbl.d(0,1).style.height="20px";
+frame.oiltbl.tbl.r[0].style.background="#fbb";
+
+function pricecalc() {
+	var arr=chkoils.concat(additives,frame.proptbl.liq,frame.proptbl.koh,frame.proptbl.naoh);
+	var elem;
+	var cur=0;12
+	var summ=0;
+	var mas=0;
+	for(var i=0;i<acids.length;i++) arr.push(acids[i].comp);
+	frame.proptbl.koh.mass.value=parseFloat(frame.proptbl.koh.innerHTML);
+	frame.proptbl.naoh.mass.value=parseFloat(frame.proptbl.naoh.innerHTML);
+	for(var i=0;i<arr.length;i++) {
+		elem=arr[i].elem?arr[i].elem:arr[i];
+		mas=elem.mass.inp?elem.mass.inp.value:elem.mass.value;
+		cur=parseFloat(elem.price.inp.inp.value)/1000*parseFloat(mas);
+		if(isNaN(cur))cur=0;
+		elem.price.span.innerHTML=Math.round(cur*100)/100;
+		summ+=cur;
+	}
+	frame.pricetbl.sum.innerHTML=Math.round(summ*100)/100;
+}
+
+function Price(lbl) {
+	var _this=this;
+	this.lbl=lbl?lbl:"";
+	this.appc=0;
+
+	this.r=frame.frame.document.createElement("tr");
+	this.d=[this.r.insertCell(-1),this.r.insertCell(-1),this.r.insertCell(-1)];
+
+	this.inp=this.d[1].appendChild(frame.frame.document.createElement("div"));
+	this.span=this.d[2].appendChild(frame.frame.document.createElement("span"));
+
+//	this.inp.className="m";
+	this.inp.setAttribute("type","num");
+	this.inp.setAttribute("min","0");
+//	this.inp.value=0;
+	this.inp=new mbr.number(this.inp);
+	this.inp.onchange=function() {if(this.inp.value=="")this.inp.value=0; else this.inp.value=Math.round(eval(this.inp.value)*100)/100; pricecalc();}
+	this.span.innerHTML="0";
+
+	this.d[0].innerHTML=this.lbl;
+
+	this.insrow=function(a,b) {
+		var t=frame.pricetbl.tbl;
+		if(a) {if(this.appc==0) t.insertRowBefore((b?b:1),this.r); this.appc++;}
+		else {this.appc--; if(this.appc==0) clearNode(this.r);}
+	}
+
+	if(prices) prices.push(this);
+}
+
+function component(nme,val,mn,mx,tit,price) {
+	this.value=val;
+	this.mn=mn;
+	this.mx=mx;
+	this.rev=false;
+	var _this=this;
+	this.title=tit?tit:"";
+	this.vbl=true;
+
+	this.price=price?price:new Price(tit);
+
+	this.slider=frame.frame.document.createElement("div");
+	this.slider.className="slider";
+	this.slider.setAttribute("min",this.mn);
+	this.slider.setAttribute("max",this.mx);
+	this.slider.setAttribute("name",nme);
+	this.slider.setAttribute("value",this.value);
+	this.slider.setAttribute("onchange","calculate()");
+	this.slider=new slidObj(this.slider);
+
+	this.mass=frame.frame.document.createElement("div");
+	this.mass.setAttribute("type","num");
+	this.mass.setAttribute("min","0");
+	this.mass.setAttribute("style","width: 100%; height: 20px;");
+	this.mass=new mbr.number(this.mass);
+//	this.mass.bt.up.style.width="6px";
+//	this.mass.bt.down.style.width="6px";
+
+	this.box=frame.frame.document.createElement("input");
+	this.box.type="checkbox";
+
+	this.box.onchange=function() {
+		if(_this.rev) _this.slider.disable(!this.checked);
+		else _this.slider.disable(this.checked);
+		calculate();
+	}
+
+	this.defaults=function() {
+		this.slider.defaults();
+		this.box.checked=false;
+		this.box.onchange();
+	}
+
+	this.mass.className="m";
+	this.mass.onchange=function() {
+		_this.box.checked=true;
+		_this.box.onchange();
+	}
+}
+
+function Acid(nam,nam1,maxpc,na,k) {
+	this.nme=nam;
+	this.nme1=nam1;
+	this.maxpc=maxpc;
+	this.price=new Price(nam);
+	this.fullname=nam+(nam1?(" ("+nam1+")"):"");
+	this.comp=new component("",0,0,maxpc,nam,this.price);
+	this.na=na;
+	this.k=k;
+}
+
+var acids=[];
+acids.push(new Acid("Лимонная к-та","цитрат",20,0.57,0.79943));
+acids.push(new Acid("Молочная к-та 80%","лактат",20,0.36,0.5049));
+acids.push(new Acid("Янтарная к-та","сукцинат",20,0.6774,0.95));
+acids.push(new Acid("Коричная к-та","циннамат",20,0.2699,0.385));
+
+frame.proptbl={
+	div: frame.frame.document.createElement("div"),
+	liq: new component("liq",33,0,200,"Жидкость"),
+	sf: new component("sf",0,0,100),
+	crem: new component("crem",30,0,100),
+	sf2: new component("sf2",10,0,100,"Пережир после геля"),
+	koh: frame.frame.document.createElement("span"),
+	naoh: frame.frame.document.createElement("span"),
+	soap: frame.frame.document.createElement("span"),
+	mass: frame.frame.document.createElement("div"),
+	prc: frame.frame.document.createElement("span"),
+	prcsf: frame.frame.document.createElement("span"),
+	add: frame.frame.document.createElement("div")
+}
+frame.proptbl.tit=mketit("Таблица пропорций",frame.proptbl.div,help[1]);
+
+frame.proptbl.koh.price=new Price("KOH");
+frame.proptbl.naoh.price=new Price("NaOH");
+frame.proptbl.koh.mass=frame.frame.document.createElement("input");
+frame.proptbl.naoh.mass=frame.frame.document.createElement("input");
+
+additives.push(frame.proptbl.sf2);
+frame.proptbl.crem.slider.disable(true);
+frame.proptbl.crem.rev=true;
+
+frame.proptbl.prc.prcnt=frame.proptbl.prc.appendChild(frame.frame.document.createElement("span"));
+frame.proptbl.prc.appendChild(frame.frame.document.createTextNode("% "));
+frame.proptbl.prc.optim=frame.proptbl.prc.appendChild(frame.frame.document.createElement("span"));
+frame.proptbl.prc.prcnt.innerHTML="0";
+frame.proptbl.prc.optim.innerHTML="(сбалансировать)";
+frame.proptbl.prc.optim.style.cursor="pointer";
+frame.proptbl.prc.optim.onclick=function() {opt_prc();}
+
+frame.proptbl.prcsf.prcnt=frame.proptbl.prcsf.appendChild(frame.frame.document.createElement("span"));
+frame.proptbl.prcsf.appendChild(frame.frame.document.createTextNode("% "));
+frame.proptbl.prcsf.optim=frame.proptbl.prcsf.appendChild(frame.frame.document.createElement("span"));
+frame.proptbl.prcsf.prcnt.innerHTML="0";
+frame.proptbl.prcsf.optim.innerHTML="(сбалансировать)";
+frame.proptbl.prcsf.optim.style.cursor="pointer";
+frame.proptbl.prcsf.optim.onclick=function() {var expt=[]; expt[11]=frame.proptbl.prcsf.prcnt; expt[13]=sfoils; opt_prc(expt);}
+
+frame.proptbl.mass.setAttribute("type","num");
+frame.proptbl.mass.setAttribute("value","500");
+frame.proptbl.mass=new mbr.number(frame.proptbl.mass);
+
+//frame.proptbl.mass.className="m";
+//frame.proptbl.mass.value=500;
+frame.proptbl.mass.onchange=function() {calculate();}
+frame.proptbl.add.inp=frame.proptbl.add.appendChild(frame.frame.document.createElement("input"));
+frame.proptbl.add.sbm=frame.proptbl.add.appendChild(frame.frame.document.createElement("button"));
+frame.proptbl.add.inp.placeholder="Введите наименование компонента";
+frame.proptbl.add.inp.className="m";
+frame.proptbl.add.inp.style.width="250px";
+frame.proptbl.add.sbm.innerHTML="добавить";
+frame.proptbl.add.sbm.setAttribute("style","padding: 0px 2px; margin: 0px 2px;");
+frame.proptbl.add.sbm.onclick=function() {addcomp(frame.proptbl.add.inp);}
+frame.proptbl.add.inp.onkeypress=function(e){if(e.keyCode==13)addcomp(this);}
+
+new mbr.colorize(frame.proptbl.prc.optim,frame.proptbl.prc.optim,["000000","00ffff","0000ff"],false);
+new mbr.colorize(frame.proptbl.prcsf.optim,frame.proptbl.prcsf.optim,["000000","00ffff","0000ff"],false);
+
+frame.proptbl.tbl=frame.proptbl.div.appendChild(mbr.mketbl([
+	["Наименование",frame.proptbl.prc,"Масса, г."],
+	["","Общий вес масел","",frame.proptbl.mass.el],
+	["Дополнительно","",""],
+	["Жидкость",frame.proptbl.liq.slider.el,frame.proptbl.liq.mass.el,frame.proptbl.liq.box],
+	["Неомыляемые жиры",frame.proptbl.sf.slider.el,"",""],
+	[frame.proptbl.crem.box,"Крем-мыло (%NaOH)",frame.proptbl.crem.slider.el,"",""],
+	[frame.proptbl.add,"","",""],
+	["Пережир",frame.proptbl.prcsf,""],
+	["",frame.proptbl.sf2.title,frame.proptbl.sf2.slider.el,frame.proptbl.sf2.mass.el,frame.proptbl.sf2.box],
+	["Итого NaOH","",frame.proptbl.naoh],
+	["Итого KOH","",frame.proptbl.koh],
+	["Вес мыла (без учёта испарения жидкости)","",frame.proptbl.soap]
+
+],"class=seloils,cellspacing=2,cellpadding=2,width=100%"));
+
+frame.proptbl.tbl.d(1,0).style.width="25px";
+frame.proptbl.tbl.d(3,1).style.width="350px";
+frame.proptbl.tbl.d(3,2).style.width="70px";
+frame.proptbl.tbl.d(3,3).style.width="25px";
+
+frame.proptbl.tbl.d(0,0).className="h";
+frame.proptbl.tbl.d(0,1).className="h";
+frame.proptbl.tbl.d(0,2).className="h";
+frame.proptbl.tbl.d(2,0).className="h";
+frame.proptbl.tbl.d(2,1).className="h";
+frame.proptbl.tbl.d(2,2).className="h";
+frame.proptbl.tbl.d(7,0).className="h";
+frame.proptbl.tbl.d(7,1).className="h";
+frame.proptbl.tbl.d(7,2).className="h";
+frame.proptbl.tbl.d(9,0).className="h";
+frame.proptbl.tbl.d(9,1).className="h";
+frame.proptbl.tbl.d(9,2).className="h";
+frame.proptbl.tbl.d(10,0).className="h";
+frame.proptbl.tbl.d(10,1).className="h";
+frame.proptbl.tbl.d(10,2).className="h";
+frame.proptbl.tbl.d(11,0).className="h";
+frame.proptbl.tbl.d(11,1).className="h";
+frame.proptbl.tbl.d(11,2).className="h";
+frame.proptbl.tbl.d(0,0).colSpan=2;
+frame.proptbl.tbl.d(0,2).colSpan=2;
+frame.proptbl.tbl.d(1,3).colSpan=2;
+frame.proptbl.tbl.d(2,0).colSpan=2;
+frame.proptbl.tbl.d(2,2).colSpan=2;
+frame.proptbl.tbl.d(3,0).colSpan=2;
+frame.proptbl.tbl.d(4,0).colSpan=2;
+frame.proptbl.tbl.d(6,0).colSpan=2;
+frame.proptbl.tbl.d(7,0).colSpan=2;
+frame.proptbl.tbl.d(9,0).colSpan=2;
+frame.proptbl.tbl.d(10,0).colSpan=2;
+frame.proptbl.tbl.d(11,0).colSpan=2;
+frame.proptbl.tbl.d(7,2).colSpan=2;
+frame.proptbl.tbl.d(9,2).colSpan=2;
+frame.proptbl.tbl.d(10,2).colSpan=2;
+frame.proptbl.tbl.d(11,2).colSpan=2;
+frame.proptbl.tbl.d(1,1).setAttribute("style","font-weight: 900; font-style: italic;");
+frame.proptbl.tbl.d(8,1).setAttribute("style","font-weight: 900; font-style: italic;");
+
+frame.progrtbl={
+	div: frame.frame.document.createElement("div"),
+	div1: [],
+	lim: ["29,54","12,22","44,69","14,46","16,48","41,70","136,165","8","4","25","21","0,0","37","0,0","0,0"]
+}
+frame.progrtbl.tit=mketit("Графики параметров будущего мыла",frame.progrtbl.div,help[2]);
+
+for(i=0;i<15;i++) {
+	frame.progrtbl.div1[i]=frame.frame.document.createElement("div");
+	frame.progrtbl.div1[i].setAttribute("min","0");
+	frame.progrtbl.div1[i].setAttribute("max","100");
+	frame.progrtbl.div1[i].setAttribute("value","0");
+	frame.progrtbl.div1[i].className="progr";
+	frame.progrtbl.div1[i].setAttribute("lim",frame.progrtbl.lim[i]);
+	frame.progrtbl.div1[i].setAttribute("dec","1");
+}
+frame.progrtbl.div1[5].setAttribute("max","200");
+frame.progrtbl.div1[6].setAttribute("max","260");
+frame.progrtbl.tbl=frame.progrtbl.div.appendChild(mbr.mketbl([
+	[frame.progrtbl.div1[0],frame.progrtbl.div1[1],frame.progrtbl.div1[2],frame.progrtbl.div1[3],frame.progrtbl.div1[4],frame.progrtbl.div1[5],frame.progrtbl.div1[6],""],
+	["Твёрдость","Очищение","Кондиция","Пузыри","Кремовость","Йодное","INS",""],
+	[frame.progrtbl.div1[7],frame.progrtbl.div1[8],frame.progrtbl.div1[9],frame.progrtbl.div1[10],frame.progrtbl.div1[11],frame.progrtbl.div1[12],frame.progrtbl.div1[13],frame.progrtbl.div1[14]],
+	["Лауриновая","Миристиновая","Пальмитиновая","Стеариновая","Рицинолеиновая","Олеиновая","Линолевая","Линоленовая"]
+],"cellspacing=2,cellpadding=2,width=100%,class=param_bars"));
+
+frame.progrtbl.tbl.d(0,0).style.width="12.5%";
+frame.progrtbl.tbl.d(0,1).style.width="12.5%";
+frame.progrtbl.tbl.d(0,2).style.width="12.5%";
+frame.progrtbl.tbl.d(0,3).style.width="12.5%";
+frame.progrtbl.tbl.d(0,4).style.width="12.5%";
+frame.progrtbl.tbl.d(0,5).style.width="12.5%";
+frame.progrtbl.tbl.d(0,6).style.width="12.5%";
+frame.progrtbl.tbl.d(0,7).style.width="12.5%";
+
+frame.pricetbl={
+	sum: frame.frame.document.createElement("span"),
+	div: frame.frame.document.createElement("div"),
+	div1: frame.frame.document.createElement("div"),
+	btn: frame.frame.document.createElement("button"),
+	txt: frame.frame.document.createElement("textarea"),
+	txb: frame.frame.document.createElement("div")
+}
+frame.pricetbl.tit=mketit("Таблица расчёта себестоимости",frame.pricetbl.div,help[3],false);
+frame.pricetbl.sav=frame.pricetbl.txb.appendChild(frame.frame.document.createElement("button"));
+frame.pricetbl.loa=frame.pricetbl.txb.appendChild(frame.frame.document.createElement("button"));
+
+frame.pricetbl.div1.appendChild(frame.pricetbl.txt);
+frame.pricetbl.div1.appendChild(frame.pricetbl.txb);
+frame.pricetbl.div1.setAttribute("style","height: 100%; position: relative;");
+frame.pricetbl.tbl=mbr.mketbl([["Компонент","р./кг","Стоимость, р."],[],["Итого",frame.pricetbl.sum]],"cellspacing=2,cellpadding=2,width=100%");
+frame.pricetbl.tbl1=frame.pricetbl.div.appendChild(mbr.mketbl([[frame.pricetbl.tbl,frame.pricetbl.btn,frame.pricetbl.div1]],"class=seloils,cellspacing=0,cellpadding=0,width=100%"));
+
+frame.pricetbl.tbl.d(0,1).style.width="120px";
+frame.pricetbl.tbl.d(0,2).style.width="120px";
+frame.pricetbl.tbl.d(0,0).className="h";
+frame.pricetbl.tbl.d(0,1).className="h";
+frame.pricetbl.tbl.d(0,2).className="h";
+frame.pricetbl.tbl.d(1,0).className="h";
+frame.pricetbl.tbl.d(2,0).className="h";
+frame.pricetbl.tbl.d(2,1).className="h";
+frame.pricetbl.tbl.d(1,0).colSpan=3;
+frame.pricetbl.tbl.d(2,0).colSpan=2;
+
+frame.pricetbl.tbl1.style.height="10px";
+frame.pricetbl.tbl1.d(0,0).setAttribute("style","background: transparent; padding: 0px;");
+frame.pricetbl.tbl1.d(0,1).setAttribute("style","width: 20px; height: 100%; vertical-align: top;");
+frame.pricetbl.tbl1.d(0,2).setAttribute("style","width: 400px; height: 100%; position: relative; vertical-align: top;");
+
+frame.pricetbl.tbl1.d(0,2).style.display="none";
+frame.pricetbl.btn.onclick=function() {
+	var obj=frame.pricetbl.tbl1.d(0,2).style;
+	if(obj.display=="none")obj.display="table-cell";
+	else obj.display="none";
+}
+
+frame.pricetbl.txb.setAttribute("style","position: absolute; top: 3px; right: 20px;");
+frame.pricetbl.btn.setAttribute("style","width: 100%; min-height: 230px; height: 100%; margin: 0px; padding: 0px; vertical-align: middle; text-align: center;");
+frame.pricetbl.txt.setAttribute("style","width: 100%; min-height: 230px; height: 100%; margin: 0px; padding: 25px 5px 0px 5px; text-align: left; -moz-box-sizing: border-box; box-sizing: border-box;");
+frame.pricetbl.txt.className="m";
+frame.pricetbl.btn.innerHTML="<div>Ш</div><div>а</div><div>б</div><div>л</div><div>о</div><div>н</div>";
+frame.pricetbl.sav.innerHTML="Импорт";
+frame.pricetbl.loa.innerHTML="Экспорт";
+
+var saveprice=[
+	function() {
+		var txt=frame.pricetbl.txt.value;
+		var regexp=/\[(.*)\]=\[(.*)\]/i;
+		var res=[];
+		var arr=txt.split(/;\s*/);
+
+		for (var i=0;i<arr.length;i++) {
+			regexp.lastIndex=0;
+			res=regexp.exec(arr[i]);
+			if(res===null)arr.splice(i,1);
+			else arr[i]=[res[1],res[2]];
+		}
+		return arr;
+	},
+	function() {
+		var arr=[];
+		for (var i=0;i<prices.length;i++) if(prices[i].lbl!="")	arr.push([prices[i].lbl,prices[i].inp.inp.value]);
+		return arr;
+	}
+]
+
+function mixprice(arr1,arr2) {
+	var arr0=[];
+	var inarr=false;
+	var i,j;
+
+	for (i=0;i<arr2.length;i++) {
+		for(j=0;j<arr1.length;j++) {
+			if(arr2[i][0]==arr1[j][0]) {inarr=true; if(eval(arr2[i][1])!=eval(arr1[j][1])) arr1[j][1]=arr2[i][1]; break;}
+		}
+		if(!inarr) arr0.push(arr2[i]);
+		else inarr=false;
+	}
+
+	return arr1.concat(arr0);
+}
+
+function txtprice(arr) {
+	var str="";
+	for(i=0;i<arr.length;i++) {
+		str+="["+arr[i][0]+"]=["+arr[i][1]+"];\n";
+		frame.pricetbl.txt.value=str;
+	}
+}
+
+function cookprice(arr) {
+	var name="prc";
+	var index=[];
+	var i;
+	var regexp=/\[(.*)\]=\[(.*)\]/i;
+	var res;
+
+	if(arr=="load") {
+		index=getCookie("prcind");
+		if(index!==null) {
+			price_mem=[];
+			index=index.split(",");
+			for(i=0;i<index.length;i++){
+				regexp.lastIndex=0;
+				res=regexp.exec(getCookie(index[i]));
+				price_mem.push([res[1],res[2]]);
+			}
+		}
+		txtprice(price_mem);
+	}
+	else {
+		for (i=0;i<arr.length;i++) {
+			setCookie(name+i,"["+arr[i][0]+"]=["+arr[i][1]+"]",365);
+			index.push(name+i);
+		}
+		setCookie("prcind",index.join(),365);
+	}
+}
+
+frame.pricetbl.sav.onclick=function() {
+	var arr=[saveprice[0](),saveprice[1]()];
+	var i,j;
+
+	price_mem=mixprice(arr[0],arr[1]);
+	txtprice(price_mem);
+	cookprice(price_mem);
+}
+
+frame.pricetbl.loa.onclick=function() {
+	price_mem=saveprice[0]();
+	for (var i=0;i<prices.length;i++) {
+		for(var j=0;j<price_mem.length;j++) {
+			if(prices[i].lbl==price_mem[j][0]) {prices[i].inp.inp.value=price_mem[j][1]; prices[i].inp.onchange();}
+		}
+	}
+	cookprice(price_mem);
+}
+
+frame.proptbl.liq.price.insrow(true,2);
+for(i=0;i<acids.length;i++) {
+	acids[i].row=frame.proptbl.tbl.insertRowBefore(5,[acids[i].fullname,acids[i].comp.slider.el,acids[i].comp.mass.el,acids[i].comp.box]);
+	acids[i].row.d[0].colSpan=2;
+	acids[i].comp.price.insrow(true,2);
+}
+frame.proptbl.sf2.price.insrow(true,2);
+frame.proptbl.naoh.price.insrow(true,2);
+frame.proptbl.koh.price.insrow(true,2);
+
+frame.printtbl={
+	div: frame.frame.document.createElement("div"),
+	tit: mbr.mketbl([["Распечатать рецепт"]],"class=header"),
+	nme: frame.frame.document.createElement("input"),
+	not: frame.frame.document.createElement("textarea"),
+	sbm: frame.frame.document.createElement("button"),
+	htm: frame.frame.document.createElement("textarea"),
+	sav: frame.frame.document.createElement("button")
+}
+frame.printtbl.tit=mketit("Распечатать рецепт",frame.printtbl.div,help[4]);
+
+frame.printtbl.nme.className="m";
+frame.printtbl.nme.name="recipe";
+frame.printtbl.nme.setAttribute("style","text-align: left; padding: 0px 10px 0px 10px;");
+frame.printtbl.not.className="m";
+frame.printtbl.not.name="notes";
+frame.printtbl.not.setAttribute("style","text-align: left; padding: 0px 10px 0px 10px; height: 10em;");
+frame.printtbl.htm.className="m";
+frame.printtbl.htm.name="html";
+frame.printtbl.htm.setAttribute("style","text-align: left; padding: 0px 10px 0px 10px; height: 110px;");
+frame.printtbl.sbm.innerHTML="Формирование страницы";
+frame.printtbl.sbm.onclick=pg_print;
+frame.printtbl.sav.innerHTML="Код страницы";
+frame.printtbl.sav.onclick=function() {pg_print("html");}
+frame.printtbl.tbl=frame.printtbl.div.appendChild(mbr.mketbl([
+	["Название",frame.printtbl.nme],
+	["Заметки",frame.printtbl.not],
+	["",frame.printtbl.sbm],
+	["",frame.printtbl.htm]
+],"width=100%,class=seloils"));
+frame.printtbl.tbl.d(0,0).style.width="100px";
+frame.printtbl.tbl.r[3].style.display="none";
+frame.printtbl.tbl.d(2,1).appendChild(frame.printtbl.sav);
+frame.c_table=frame.body.appendChild(mbr.mketbl([
+	[frame.oiltbl.tit],
+	[frame.oiltbl.div],
+	[],
+	[frame.proptbl.tit],
+	[frame.proptbl.div],
+	[],
+	[frame.progrtbl.tit],
+	[frame.progrtbl.div],
+	[],
+	[frame.pricetbl.tit],
+	[frame.pricetbl.div],
+	[],
+	[frame.printtbl.tit],
+	[frame.printtbl.div]
+],"border=0,cellspacing=0,cellpadding=0,width=100%"));
+
+frame.c_table.d(2,0).style.height="10px";
+frame.c_table.d(5,0).style.height="10px";
+frame.c_table.d(8,0).style.height="10px";
+frame.c_table.d(11,0).style.height="10px";
+</script>
+
+<script>
+var w_oils=150,w_acids=240,w_params=220;
+var chkoils=[];
+var sfoils=[];
+var pr_bars=[];
+evalC(oils);
+
+frame.hidetbl=hidetbl;
+
+function calculate(impt) {
+	var param=0;
+	var maxpc=0;
+	var maxsfpc=0;
+	var maxkoh=0;
+	var maxnaoh=0;
+	var maxliq=0;
+	var maxcit=0;
+	var maxlact=0;
+	var maxsoap=0;
+	var mas=0;
+	var massf=0;	
+	var oiloh=[0,0,0,0];
+	var mass=impt?parseFloat(impt[0].value):(frame.proptbl.mass.inp.value!=""?parseFloat(frame.proptbl.mass.inp.value):0);
+	var liq=impt?impt[1]:frame.frame.document.getElementsByName("liq")[0];
+	var sf=impt?impt[2]:frame.frame.document.getElementsByName("sf")[0];
+	var crem=impt?impt[3]:frame.frame.document.getElementsByName("crem")[0];
+	var liqbox=impt?impt[4]:frame.proptbl.liq.box;
+	var crembox=impt?impt[5]:frame.proptbl.crem.box;
+	var liqmas=impt?impt[6]:frame.proptbl.liq.mass.inp;
+	var pr_br=impt?impt[7]:pr_bars;
+	var kohmas=impt?impt[8]:frame.proptbl.koh;
+	var naohmas=impt?impt[9]:frame.proptbl.naoh;
+	var soapmas=impt?impt[10]:frame.proptbl.soap;
+	var prcnt=impt?impt[11]:frame.proptbl.prc.prcnt;
+	var prcntsf=impt?0:frame.proptbl.prcsf.prcnt;
+	var acids1=impt?impt[12]:acids;
+	var chkoils1=impt?impt[13]:chkoils;
+	var sfoils1=impt?[]:sfoils;
+	var sf2=frame.proptbl.sf2;
+	for(i=0;i<chkoils1.length;i++) if(chkoils1[i].vbl) {
+		if(!chkoils1[i].fix.checked) {
+			chkoils1[i].mass.inp.value=Math.round(mass*chkoils1[i].slider.val)/100;
+			maxkoh+=mass*chkoils1[i].slider.val*chkoils1[i].koh;
+			maxnaoh+=mass*chkoils1[i].slider.val*chkoils1[i].naoh;
+		}
+		else {
+			chkoils1[i].slider.toVal(Math.round(parseFloat(chkoils1[i].mass.inp.value)/mass*10000)/100);
+			maxkoh+=parseFloat(chkoils1[i].mass.inp.value)*chkoils1[i].koh*100;
+			maxnaoh+=parseFloat(chkoils1[i].mass.inp.value)*chkoils1[i].naoh*100;
+		}
+		if(impt)chkoils1[i].mass.eq();
+		maxpc+=chkoils1[i].slider.val;
+		mas+=parseFloat(chkoils1[i].mass.inp.value);
+	}
+
+	for(i=0;i<sfoils1.length;i++) if(sfoils1[i].vbl) {
+		if(!sfoils1[i].fix.checked) sfoils1[i].mass.inp.value=Math.round(parseFloat(sf2.mass.inp.value)*sfoils1[i].slider.val)/100;
+		else sfoils1[i].slider.toVal(Math.round(parseFloat(sfoils1[i].mass.inp.value)/parseFloat(sf2.mass.inp.value)*10000)/100);
+		if(impt)sfoils1[i].mass.eq();
+		maxsfpc+=sfoils1[i].slider.val;
+		massf+=parseFloat(sfoils1[i].mass.inp.value);
+	}
+
+	prcnt.innerHTML=Math.round(maxpc*100)/100;
+	prcntsf.innerHTML=Math.round(maxsfpc*100)/100;
+	for(i=0;i<pr_br.length;i++) {
+		for(j=0;j<chkoils1.length;j++) if(chkoils1[j].vbl) {
+			if(chkoils1[j].params[i]>=0)param+=chkoils1[j].params[i]*parseFloat(chkoils1[j].mass.inp.value)/mas;
+			else param+=chkoils1[j].acids[i-7]*parseFloat(chkoils1[j].mass.inp.value)/mas;
+		}
+		pr_br[i].change(isNaN(param)?0:param);
+		param=0;
+	}
+	if(liqbox.checked) {
+		if(mas>0)liq.slider.toVal(Math.round(liqmas.value/mas*10000)/100);
+		maxliq=liqmas.value?(parseFloat(liqmas.value)*100):0;
+	}
+	else {
+		maxliq=mas*parseFloat(liq.value);
+	}
+
+	maxkoh=maxkoh*(100-parseFloat(sf.value))/100;
+	maxnaoh=maxnaoh*(100-parseFloat(sf.value))/100;
+
+	for(i=0;i<acids1.length;i++) {
+		if(acids1[i].comp.box.checked) {
+			if(mas>0)acids1[i].comp.slider.toVal(Math.round(acids1[i].comp.mass.inp.value/mas*10000)/100);
+			acids1[i].mx=acids1[i].comp.mass.inp.value?(parseFloat(acids1[i].comp.mass.inp.value)*100):0;
+		}
+		else {
+			acids1[i].mx=mas*parseFloat(acids1[i].comp.slider.val);
+		}
+		acids1[i].comp.mass.inp.value=Math.round(acids1[i].mx)/100;
+		maxsoap+=acids1[i].mx;
+		oiloh[2]+=acids1[i].mx*acids1[i].k;
+		oiloh[3]+=acids1[i].mx*acids1[i].na;
+	}
+	
+	if(crembox.checked) {
+		maxkoh*=(100-parseFloat(crem.value))/100;
+		maxnaoh*=parseFloat(crem.value)/100;
+		oiloh[2]*=(100-parseFloat(crem.value))/100;
+		oiloh[3]*=parseFloat(crem.value)/100;
+	}
+	oiloh[0]=maxkoh;
+	oiloh[1]=maxnaoh;
+	maxkoh+=oiloh[2];
+	maxnaoh+=oiloh[3];
+	liqmas.value=Math.round(maxliq)/100;
+	if(impt){
+		liqmas.eq();
+		liqmas.eq();
+		for(i=0;i<acids1.length;i++) {
+			acids1[i].comp.mass.eq();
+		}
+	}
+	kohmas.innerHTML=Math.round(maxkoh)/100;
+	naohmas.innerHTML=Math.round(maxnaoh)/100;
+	kohmas.title="Масла: "+(Math.round(oiloh[0])/100)+"; кислоты: "+(Math.round(oiloh[2])/100);
+	naohmas.title="Масла: "+(Math.round(oiloh[1])/100)+"; кислоты: "+(Math.round(oiloh[3]	)/100);
+
+	maxsoap+=(mas+massf)*100+((crembox.checked)?maxkoh:0)+maxnaoh+maxliq;
+
+	for(i=0;i<additives.length;i++) if(additives[i].vbl){
+		if(additives[i].box.checked) {
+			if(mas>0)additives[i].slider.toVal(Math.round(additives[i].mass.inp.value/mas*10000)/100);
+			additives[i].mas=additives[i].mass.inp.value?(parseFloat(additives[i].mass.inp.value)*100):0;
+		}
+		else {
+			additives[i].mas=mas*parseFloat(additives[i].slider.val);
+		}
+		additives[i].mass.inp.value=Math.round(additives[i].mas)/100;
+		if(additives[i]!=sf2||massf==0)maxsoap+=additives[i].mas;
+	}
+	soapmas.innerHTML=Math.round(maxsoap)/100;
+
+	pricecalc();
+}
+
+function initsliders() {
+	var divs=frame.frame.document.getElementsByTagName("div");
+	for(i=0;i<divs.length;i++) {
+		if(divs[i].className=="slider") {divs[i].slider.dimFind();divs[i].slider.setWidth();}
+		else if(divs[i].className=="progr") pr_bars.push(new Progr(divs[i]));
+	}
+}
+
+function appendR() {
+	var t=frame.oiltbl.tbldiv.tbl;
+	var index=0;
+	while(t.lastChild)t.removeChild(t.lastChild);
+
+	function apnd() {
+		t.appendChild(oils[index++][7]);
+		if(index<oils.length) if(anim)oils.to=setTimeout(function() {apnd();}, 30);
+		else {clearTimeout(oils.to); apnd();}
+	}
+	apnd();
+}
+
+function oilTblCreate() {
+	var win=frame.frame;
+	var r=new Array();
+	var inp=new Array();
+	var r_ind=0;
+
+	clearTimeout(oils.to);
+
+	for(i=0;i<oils.length;i++) {
+		r[i]=win.document.createElement("tr");
+		r[i].d=win.document.createElement("td");
+		r[i].d1=win.document.createElement("td");
+		r[i].d2=win.document.createElement("td");
+		r[i].d3=win.document.createElement("td");
+		r[i].d4=win.document.createElement("td");
+		r[i].d5=win.document.createElement("td");
+		r[i].sf=r[i].d5.appendChild(win.document.createElement("input"));
+		r[i].lbl=win.document.createElement("label");
+		r[i].lbld=win.document.createElement("div");
+		r[i].chb=win.document.createElement("input");
+		r[i].d.className="oils";
+		r[i].d.span=win.document.createElement("span");
+		r[i].d.span.innerHTML=oils[i][1];
+		r[i].d4.className="info";
+		r[i].d5.className="info";
+		r[i].d1.setAttribute("class","acids");
+		r[i].d2.setAttribute("class","params");
+		r[i].d3.setAttribute("class","params");
+		r[i].d4.span=win.document.createElement("span");
+		r[i].d4.span.innerHTML="[инфо]";
+		r[i].d4.ind=oils[i][0];
+		r[i].d4.onclick=function() {oilInfos(this.ind);}
+		r[i].d5.style.cursor="default";
+		r[i].d5.onmouseover=function() {frame.oiltbl.hl(18);}
+		r[i].d5.onmouseout=function() {frame.oiltbl.hl(0);}
+		r[i].chb.setAttribute("type","checkbox");
+		r[i].sf.type="checkbox";
+		r[i].chb.ind=r[i].sf.ind=oils[i];
+		r[i].chb.onchange=function() {setoil(this.ind,0,this.checked);}
+		r[i].sf.onchange=function() {setoil(this.ind,0,this.checked,true);}
+		r[i].d.r=r[i];
+		r[i].d1.r=r[i];
+		r[i].d2.r=r[i];
+		r[i].d3.r=r[i];
+		r[i].d4.r=r[i];
+
+		for(j=0;j<oils[i][3].length;j++){
+			inp.push(win.document.createElement("input"));
+			inp[inp.length-1].setAttribute("class","acids");
+			inp[inp.length-1].setAttribute("readonly","readonly");
+			inp[inp.length-1].value=oils[i][3][j];
+			inp[inp.length-1].id=j+1;
+			inp[inp.length-1].onmouseover=function() {frame.oiltbl.hl(this.id);}
+			inp[inp.length-1].onmouseout=function() {frame.oiltbl.hl(0);}
+			r[i].d1.appendChild(inp[inp.length-1]);
+		}
+		for(j=0;j<oils[i][6].length+2;j++) {
+			inp.push(win.document.createElement("input"));
+			inp[inp.length-1].setAttribute("class","params");
+			inp[inp.length-1].setAttribute("readonly","readonly");
+			inp[inp.length-1].value=(j==oils[i][6].length)?oils[i][4]:((j==oils[i][6].length+1)?oils[i][5]:oils[i][6][j]);
+			inp[inp.length-1].id=j+1+oils[i][3].length;
+			inp[inp.length-1].onmouseover=function() {frame.oiltbl.hl(this.id);}
+			inp[inp.length-1].onmouseout=function() {frame.oiltbl.hl(0);}
+			r[i].d2.appendChild(inp[inp.length-1]);
+		}
+		{
+			inp.push(win.document.createElement("input"));
+			inp[inp.length-1].setAttribute("class","oh");
+			inp[inp.length-1].setAttribute("readonly","readonly");
+			inp[inp.length-1].value=Math.round(oils[i][2][1]*10000)/10000;
+			inp[inp.length-1].id=17;
+			inp[inp.length-1].onmouseover=function() {frame.oiltbl.hl(this.id,1);}
+			inp[inp.length-1].onmouseout=function() {frame.oiltbl.hl(this.id,0);}
+			r[i].d3.appendChild(inp[inp.length-1]);
+
+			inp.push(win.document.createElement("input"));
+			inp[inp.length-1].setAttribute("class","oh");
+			inp[inp.length-1].setAttribute("readonly","readonly");
+			inp[inp.length-1].value=Math.round(oils[i][2][0]*10000)/10000;
+			inp[inp.length-1].id=16;
+			inp[inp.length-1].onmouseover=function() {frame.oiltbl.hl(this.id,1);}
+			inp[inp.length-1].onmouseout=function() {frame.oiltbl.hl(this.id,0);}
+			r[i].d3.appendChild(inp[inp.length-1]);
+		}
+		oils[i][7]=r[i];
+		r[i].appendChild(r[i].d);
+		r[i].appendChild(r[i].d5);
+		r[i].appendChild(r[i].d4);
+		r[i].appendChild(r[i].d1);
+		r[i].appendChild(r[i].d2);
+		r[i].appendChild(r[i].d3);
+		r[i].d.appendChild(r[i].lbl);
+		r[i].d4.appendChild(r[i].d4.span);
+		r[i].lbl.appendChild(r[i].lbld);
+		r[i].lbld.appendChild(r[i].chb);
+		r[i].lbld.appendChild(r[i].d.span);
+		new mbr.colorize(r[i].d.span,r[i].d,["000000","00ffff","0000ff"],false);
+		new mbr.colorize(r[i].d4.span,r[i].d4,["000000","00ffff","0000ff"],false);
+		new mbr.colorize(r[i].d,false,["f7f2df","e7e2cf"],"bg");
+		new mbr.colorize(r[i].d1,false,["f7f2df","e7e2cf"],"bg");
+		new mbr.colorize(r[i].d2,false,["f7f2df","e7e2cf"],"bg");
+		new mbr.colorize(r[i].d3,false,["f7f2df","e7e2cf"],"bg");
+		new mbr.colorize(r[i].d4,false,["f7f2df","e7e2cf"],"bg");
+		new mbr.colorize(r[i].d5,false,["f7f2df","e7e2cf"],"bg");
+
+		r[i].onmouseover=function() {
+			this.d.action.initA();
+			this.d1.action.initA();
+			this.d2.action.initA();
+			this.d3.action.initA();
+			this.d4.action.initA();
+			this.d5.action.initA();
+		}
+		r[i].onmouseout=function() {
+			this.d.action.initB();
+			this.d1.action.initB();
+			this.d2.action.initB();
+			this.d3.action.initB();
+			this.d4.action.initB();
+			this.d5.action.initB();
+		}
+	}
+	appendR();
+}
+
+function init() {
+	oilTblCreate();
+	window.onload=function() {
+		initsliders();
+		cookprice("load");
+		adv_list.load();
+	}
+}
+function showhide(what,f,plus) {
+	what=document.getElementsByName(what);
+	box.style.width=f?((parseInt(box.style.width)+plus)+"px"):((parseInt(box.style.width)-plus)+"px");
+	for(i=0;i<what.length;i++) {
+		what[i].style.display=f?"table-cell":"none";
+	}
+}
+
+function Oil(ind,prc) {
+	var win=frame.frame;
+	var _this=this;
+
+	this.arr=ind;
+	this.n=ind[0];
+	this.nme=ind[1];
+	this.prc=prc;
+	this.vbl=true;
+	this.params=ind[6].concat(ind[4],ind[5]);
+	this.acids=ind[3];
+	this.koh=ind[2][0];
+	this.naoh=ind[2][1];
+	this.chbox=ind[7].chb;
+	this.tblpos=2;
+	if(!ind[9])ind[9]=new Price(this.nme);
+
+	this.price=ind[9];
+
+	var t=frame.proptbl.tbl;
+	this.r=win.document.createElement("tr");
+	this.d=[this.r.insertCell(-1),this.r.insertCell(-1),this.r.insertCell(-1),this.r.insertCell(-1),this.r.insertCell(-1)];
+	this.elem=new component("oils[]",0,0,100,this.nme,this.price);
+	this.span=win.document.createElement("span");
+	this.del=win.document.createElement("div");
+	this.slider=this.elem.slider;
+	this.mass=this.elem.mass;
+	this.fix=this.elem.box;
+
+	this.span.innerHTML=this.nme;
+	this.del.innerHTML="X";
+	this.del.setAttribute("style","width: 100%; height: 100%; text-align: center; cursor: pointer; font-weight: 900;");
+	this.del.onclick=function() {_this.changevbl(false);}
+	this.d[0].style.padding="0px";
+
+	this.d[0].appendChild(this.del);
+	this.d[1].appendChild(this.span);
+	this.d[2].appendChild(this.slider.el);
+	this.d[3].appendChild(this.mass.el);
+	this.d[4].appendChild(this.fix);
+
+	this.slider.reserved=function() {_this.prc=this.val/100;}
+
+	new mbr.actspan(this.span,this.del,"text-decoration: line-through;");
+
+	this.changevbl=function(a) {
+		this.vbl=a;
+		if(!a) {
+			clearNode(this.r);
+			_this.chbox.checked=false;
+			this.price.insrow(false);
+		}
+		else {
+			this.insrow();
+			_this.chbox.checked=true;
+		}
+		calculate();
+	}
+
+	this.insrow=function() {
+		t.insertRowBefore(this.tblpos,this.r);
+		calculate();
+		this.slider.dimFind();
+		this.slider.setWidth();
+		this.price.insrow(true,1);
+	}
+}
+
+function setoil(ind,prc,enab,sf) {
+	var ex=false;
+	var arr=sf?sfoils:chkoils;
+	for(i=0;i<arr.length;i++){
+		if(arr[i].n==ind[0]) {ex=i; break;}
+	}
+	if(ex===false){
+		arr.push(new Oil(ind,prc));
+		if(sf)arr[arr.length-1].tblpos=9;
+		if(sf)arr[arr.length-1].chbox=arr[arr.length-1].arr[7].sf;
+		arr[arr.length-1].insrow();
+	}
+	else {
+		arr[ex].changevbl(enab);
+	}
+}
+document.getElementById("mobile").onclick=mobileCalc;
+
+init();
+</script>
+
+</body>
+</html>

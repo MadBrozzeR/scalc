@@ -1,0 +1,31 @@
+body			{font-size: 16px; background: black;}
+table.mTbl td.h		{text-align: center; vertical-align: middle; background: #eaa; border: 2px solid #fbb; border-color: #fcc #c88 #c88 #fcc;}
+table.mTbl td.h div	{padding: 5px;}
+
+table.mOils td		{background: #f7f2df; border: 2px solid black; border-color: #ffffff #d7d2bf #d7d2bf #ffffff;}
+table.mOils td div	{padding: 5px;}
+
+table.mProgr td		{background: #f7f2df; border: 1px solid black; white-space: nowrap;}
+table.mProgr table td	{background: transparent; border: 0px;}
+
+table.mProp		{border-collapse: collapse;}
+table.mProp td.h1	{background: #fbb; font-weight: 900; text-align: center; border: 1px solid #000;}
+table.mProp td.h	{background: #f7f2df; text-align: left; border: 1px solid black; height: 30px;}
+table.mProp td.d	{background: #f7f2df; text-align: left; border: 1px solid black; height: 30px;}
+table.mProp td.c	{background: #fbb; text-align: left; border: 1px solid black; height: 30px;}
+table.mProp .span	{height: 10px;}
+table.mProp td.h div	{padding: 0;}
+
+/*
+div.slider		{width: 95%; border: 1px solid black; padding: 0px; border-radius: 5px; position: relative; margin: 0 2px 0 2px;}
+div.slider div		{width: 25px; font-size: 15px; background: #55f url("slider.png"); border-radius: 4px; overflow: hidden; height: 17px;}
+//div.slider div		{background: #55f url("58611.png");}
+div.slider input	{border: 0px; margin: 0px; padding: 0px; background: none; width: 40px; color: white; text-align: left;}
+div.slider .step td	{background: #aaa; width: 16px; height: 8px;}
+*/
+
+input.m,
+textarea.m		{border: 1px solid black; border-radius: 7px; background: #ddf; color: black; text-align: center; width: 95%; padding: 0px;}
+input[disabled]	{background: #aaa;}
+
+input[type="range"]	{width: 100%;}

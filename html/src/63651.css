@@ -1,0 +1,70 @@
+.punbb .main input			{font-size: 12px; color: black; margin: 0px; font-family: serif;}
+.punbb .main input[type=checkbox]	{margin: 4px; background: #ddf; border: 1px solid black; border-radius: 3px 3px 3px 3px;}
+.punbb .main select			{border: 1px solid black; border-radius: 3px 3px 3px 3px; color: black;}
+.punbb .main select,
+.punbb .main optgroup			{color: black; font-family: serif;}
+
+.punbb .main ol				{margin: 10px 0px; padding: 0px 0px 0px 20px;}
+.punbb .main ol li			{list-style: decimal outside; margin: 5px 10px; text-align: left; padding: 0px; text-indent: 0px;}
+
+.punbb .main table			{table-layout: auto;}
+.punbb .main td				{padding: 0px; border: 0px; font-size: 16px; font-family: serif; color: black; vertical-align: middle;}
+.punbb .main table.calc div		{padding: 0px; margin: 0px;}
+.punbb .main table.calc table td	{padding: 2px; border: 0px;}
+
+.punbb .main table.header		{width: 100%; background: #eaa;}
+.punbb .main table.header td		{font-weight: 900; text-align: center;}
+
+.punbb .main div.progr		{width: 30px; position: relative; height: 150px; border: 1px solid black; overflow: visible;}
+.punbb .main div.progr div.limax	{width: 30px; height: 20px; position: absolute; bottom: 100%; left: 100%; border: 0; border-bottom: 1px solid black; text-indent: 5px;}
+.punbb .main div.progr div.limin	{width: 30px; height: 40px; position: absolute; bottom: 0px; left: 100%; border: 0; border-top: 1px solid black; text-indent: 5px;}
+.punbb .main div.progr div.pr_bar	{width: 100%; height: 0px; position: absolute; bottom: 0px; left: 0px; background: #33e; overflow: visible;}
+.punbb .main div.progr div.pr_bar div	{position: absolute; bottom: 0px; text-align: center; width: 100%; text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff; color: #000;}
+
+.punbb .main div.oildiv		{border: 0px solid black; width: 100%; height: 300px; overflow: auto; overflow-y: scroll; position: relative;}
+
+.punbb .main table.tblttl		{border: 1px solid black;}
+.punbb .main input.acids,
+.punbb .main input.params,
+.punbb .main input.oh		{width: 25px; padding: 0px; margin: 0px 1px 0px 0px; border: 1px solid black; background: none; color: black; height: 100%;}
+.punbb .main input.oh		{width: 45px;}
+
+.punbb .main table.seloils		{border: 2px solid #eaa;}
+.punbb .main table.seloils th,
+.punbb .main table.seloils td.h	{background: #fbb; text-align: center; font-weight: 900; padding: 2px;}
+.punbb .main table.seloils td	{background: #f7f2df; padding: 2px;}
+.punbb .main div[type=num]		{height: 20px; width: 100%; font-size: 2px;}
+.punbb .main div[type=num]>input	{margin: 0px; padding: 0px 0px 0px 0px; border: 1px solid black; border-radius: 10px 10px 10px 10px; background: #ddf; text-align: center;}
+.punbb .main div[type=num]>div		{bottom: 0px; right: 20px;}
+.punbb .main div[type=num] td.up		{border: 1px solid black; border-radius: 0px 5px 0px 0px; font-size: 2px;}
+.punbb .main div[type=num] td.down		{border: 1px solid black; border-radius: 0px 0px 5px 0px; font-size: 2px;}
+.punbb .main table.seloils input.m,
+.punbb .main textarea.m		{border: 1px solid black; border-radius: 7px; background: #ddf; color: black; text-align: center; width: 95%; padding: 0px; font-size: 12px;}
+
+.punbb .main div.slider		{width: 340px; border: 1px solid black; padding: 0px; border-radius: 5px; position: relative; margin: 0 2px 0 2px; height: 20px; -moz-box-sizing: border-box; box-sizing: border-box;}
+.punbb .main div.slider div		{width: 40px; font-size: 15px; background: #55f url("slider.png"); border-radius: 4px; overflow: hidden; height: 100%;}
+.punbb .main div.slider div		{background: #55f url("58611.png");}
+.punbb .main div.slider input	{border: 0px; margin: 0px; padding: 0px; background: none; width: 40px; color: white; text-align: left; height: 100%;}
+.punbb .main div.slider .step td	{background: #aaa; width: 16px; height: 8px;}
+.punbb .main div.slider td.up		{border: 1px solid black; border-radius: 0px 5px 0px 0px; font-size: 2px;}
+.punbb .main div.slider td.down		{border: 1px solid black; border-radius: 0px 0px 5px 0px; font-size: 2px;}
+
+.punbb .main div.info		{width: 100%; height: 100%; position: relative;}
+.punbb .main div.info td		{background: #f7e2cf; height: 10px; text-align: justify;}
+.punbb .main div.info td.h		{background: #faa; text-align: center; font-weight: 900; height: 10px;}
+.punbb .main div.info td.x		{text-align: center; vertical-align: middle; border: 1px solid black; width: 20px; height: 20px; cursor: pointer; background: #faa;}
+
+.punbb .main td.acids,
+.punbb .main td.params	{white-space: nowrap; width: 20px; padding: 0px 2px 0px 2px; background: #f7f2df;}
+.punbb .main td.oils			{background: #f7f2df;}
+.punbb .main td.info			{background: #f7f2df; width: 20px; cursor: pointer; padding: 0px 2px 0px 2px;}
+.punbb .main td.oils div,
+.punbb .main td.oils input		{cursor: pointer;}
+.punbb .main div.dimparams		{color: #aaa;}
+
+.punbb .main table.param_bars	{border: 2px solid #eaa;}
+.punbb .main table.param_bars td	{background: #f7f2df;}
+
+div#adv					{height: 22px; overflow: visible; padding: 0px; position: relative;}
+div#adv>div				{border: 1px solid transparent; background: transparent; overflow: hidden; height: 22px; line-height: 22px; z-index: 2; position: absolute; top: 0px; left: 0px; white-space: nowrap; padding: 0px 3px;}
+div#adv>div>div				{cursor: pointer; text-decoration: underline;}
