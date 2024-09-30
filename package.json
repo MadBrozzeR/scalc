@@ -1,0 +1,39 @@
+{
+  "name": "scalc",
+  "version": "0.2.0",
+  "description": "Soap Calculator",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -b ./server ./client",
+    "start": "mbr-dev-server --port=6001 ./build/server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MadBrozzeR/scalc.git"
+  },
+  "keywords": [
+    "soap",
+    "calc",
+    "calculator",
+    "lye",
+    "naoh",
+    "koh"
+  ],
+  "author": "MadBrozzeR",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MadBrozzeR/scalc/issues"
+  },
+  "homepage": "https://github.com/MadBrozzeR/scalc#readme",
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "mbr-serv-request": "^0.2.3",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "mbr-state": "^0.2.0",
+    "mbr-style": "^1.1.2",
+    "splux": "^1.6.1"
+  }
+}
